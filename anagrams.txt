@@ -1,0 +1,48 @@
+Given an array of strings, return all groups of strings that are anagrams.
+
+Note: All inputs will be in lower-case.
+
+
+Solution:
+
+class Solution {
+public:
+    vector<string> anagrams(vector<string> &strs) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<string> results;
+        if(strs.size() < 1)
+        return results;
+        
+        vector<string> strs2 = strs;
+        for(int i = 0; i < strs2.size(); i++)
+        {
+            sort(strs2[i].begin(),strs2[i].end());
+        }
+        
+        map<string,vector<string>> map_strs;
+        for(int i = 0; i < strs2.size(); i++)
+        {
+            if(map_strs.find(strs2[i]) !=map_strs.end())
+            {
+                vector<string> tmp2 = map_strs[strs2[i]];
+                tmp2.push_back(strs[i]);
+                map_strs[strs2[i]] = tmp2;
+            }else
+            {
+                vector<string> tmp(1,strs[i]);
+                map_strs[strs2[i]] = tmp;
+            }
+        }
+        
+        map<string,vector<string>>::iterator iterator;
+        for(iterator = map_strs.begin(); iterator!=map_strs.end();iterator++)
+        {
+            if(iterator->second.size() > 1)
+            {
+                results.insert(results.end(),iterator->second.begin(),iterator->second.end());
+            }
+        }
+        return results;
+    }
+};
