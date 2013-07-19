@@ -1,0 +1,59 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<vector<int>> palindrome;
+        int strLen = s.size();
+        for(int i = 0; i < strLen;i++)
+        {
+            vector<int> cur(1,i);
+            palindrome.push_back(cur);
+        }
+        for(int i = 1; i < strLen;i++)
+        {
+            vector<int> cur(2);
+            if(s[i-1] == s[i])
+            {
+                cur[0] = i-1;
+                cur[1] = i;
+                palindrome.push_back(cur);
+            }
+            
+        }
+        vector<bool> flags(palindrome.size(),true);
+        int max_len = 0; 
+        int max_index = 0;
+        
+        for(int i = 0; i < strLen;i++)
+        {
+            
+            for(int j = 0; j < palindrome.size();j++)
+            {
+                if(flags[j])
+                {
+                    flags[j] = false;
+                vector<int> cur = palindrome[j];
+                int start = cur[0] -1;
+                int end = cur[cur.size()-1]+1;
+                if((start >=0) && (end <strLen))
+                {
+                    if(s[start]==s[end])
+                    {
+                        cur.insert(cur.begin(),start);
+                        cur.insert(cur.end(),end);
+                        palindrome[j] = cur;
+                        flags[j] = true;
+                    }
+                }
+                if(cur.size() > max_len)
+                {
+                    max_len = cur.size();
+                    max_index = j;
+                }
+                }
+            }
+        }
+        return s.substr(palindrome[max_index][0],palindrome[max_index].size());
+    }
+};
